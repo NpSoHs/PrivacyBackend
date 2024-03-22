@@ -1,0 +1,90 @@
+@startuml DentistBooking Class UML
+left to right direction
+package "DentistBooking"{
+    class "<<Application>>\nDentistBooking" as DentistBookingService{}
+
+    ' Dentis class
+    class "<<Resource>>\nDentists" as ResourceDentists{
+        <<GET>> +getDentists():Dentist
+        <<POST>> +createDentist():Dentist
+    }
+
+    class "<<Resource>>\nDentist" as ResourceDentist {
+        <<GET>> +getDentist(): Dentist
+        <<PUT>> +updateDentist(): Dentist
+        <<DELETE>> +deleteDentist(): void
+    }
+
+    class "<<Representation>>\nDentist" as RepresentationDentist {
+        -name
+        -years_of_experience
+        -area_of_expertise
+    }
+
+    ' Appointment class
+    class "<<Resource>>\nAppointments" as ResourceAppointments{
+        <<GET>> +getAppointments():Appointment
+        <<POST>> +createAppointment():Appointment
+    }
+
+    class "<<Resource>>\nAppointment" as ResourceAppointment {
+        <<GET>> +getAppointment(): Appointment
+        <<PUT>> +updateAppointment(): Appointment
+        <<DELETE>> +deleteAppointment(): void
+    }
+
+    class "<<Representation>>\nAppointment" as RepresentationAppointment {
+        -apptDate
+        -userId
+        -Dentist
+    }
+
+    ' Authentication class
+    class "<<Resource>>\nAuthentication" as ResourceAuthentication{
+    }
+    class "<<Resource>>\nRegisterUser" as ResourceRegister{
+        <<POST>> +register():User
+    }
+
+    class "<<Resource>>\nLogin" as ResourceLogin{
+        <<POST>> +login():User
+    }
+
+    class "<<Resource>>\nLogout" as ResourceLogout{
+        <<GET>> +logout():void
+    }
+
+    class "<<Resource>>\nGetMe" as ResourceMe{
+        <<GET>> +getme():User
+    }
+
+    class "<<Representation>>\nUser" as RepresentationUser {
+        -name
+        -email
+        -role
+        -tel
+    }
+}
+
+' Dentist path
+DentistBookingService ..> ResourceDentists:"/dentists\n<<Path>>"
+ResourceDentists ..> ResourceDentist: "/{dentistId}\n<<Path>>"
+ResourceDentist ..> RepresentationDentist: "<<use>>"
+
+' Appointment path
+DentistBookingService ..> ResourceAppointments:"/appointments\n<<Path>>"
+ResourceAppointments ..> ResourceAppointment: "/{appointmentId}\n<<Path>>"
+ResourceAppointment ..> RepresentationAppointment: "<<use>>"
+RepresentationAppointment ..> RepresentationDentist: "<<use>>"
+
+' Authentication path
+DentistBookingService ..> ResourceAuthentication:"/auth\n<<Path>>"
+ResourceAuthentication ..> ResourceRegister:"/register\n<<Path>>"
+ResourceAuthentication ..> ResourceLogin:"/login\n<<Path>>"
+ResourceAuthentication ..> ResourceMe:"/me\n<<Path>>"
+ResourceAuthentication ..> ResourceLogout:"/logout\n<<Path>>"
+ResourceLogin ..> RepresentationUser: "<<use>>"
+ResourceRegister ..> RepresentationUser: "<<use>>"
+ResourceMe ..> RepresentationUser: "<<use>>"
+
+@enduml
