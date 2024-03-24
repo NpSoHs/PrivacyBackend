@@ -15,10 +15,18 @@ const dentists = require('./routes/dentists');
 const auth = require('./routes/auth');
 const appointments = require('./routes/appointments');
 
+const corsOptions = {
+    origin: '*', // อนุญาตให้ทุกโดเมนเข้าถึง
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // อนุญาตให้ใช้งานเฉพาะ method นี้
+    allowedHeaders: ['Content-Type', 'Authorization'], // อนุญาตให้ใช้งานเฉพาะ headers นี้
+    credentials: true, // อนุญาตให้เซิร์ฟเวอร์ส่ง cookies และ HTTP authentication กลับไป
+    preflightContinue: false // ไม่อนุญาตให้เซิร์ฟเวอร์ส่งคำขอ preflight ไปยังหน้าเพจอื่น
+  };
+
 //Body parser
 const app = express(); 
 app.use(express.json());
-app.use(cors())
+app.use(cors(corsOptions))
 //Cookie parser
 app.use(cookieParser());
 
