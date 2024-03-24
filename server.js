@@ -16,7 +16,8 @@ const auth = require('./routes/auth');
 const appointments = require('./routes/appointments');
 
 const corsOptions = {
-    origin: '*', // อนุญาตให้ทุกโดเมนเข้าถึง
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200,
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // อนุญาตให้ใช้งานเฉพาะ method นี้
     allowedHeaders: ['Content-Type', 'Authorization'], // อนุญาตให้ใช้งานเฉพาะ headers นี้
     credentials: true, // อนุญาตให้เซิร์ฟเวอร์ส่ง cookies และ HTTP authentication กลับไป
