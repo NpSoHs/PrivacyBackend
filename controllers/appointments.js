@@ -11,6 +11,9 @@ exports.getAppointments = async (req,res,next) => {
         query = Appointment.find({user:req.user.id}).populate({
             path: 'dentist',
             select: 'name years_of_experience area_of_expertise'
+        }).populate({
+            path: 'user',
+            select: 'name'
         });
     } else { //If you are an admin, you can see all
         if(req.params.dentistId) {
@@ -18,11 +21,17 @@ exports.getAppointments = async (req,res,next) => {
             query = Appointment.find({dentist: req.params.dentistId}).populate({
                 path: 'dentist',
                 select: 'name years_of_experience area_of_expertise'
+            }).populate({
+                path: 'user',
+                select: 'name'
             });
         } else {
             query = Appointment.find().populate({
                 path: 'dentist',
                 select: 'name years_of_experience area_of_expertise'
+            }).populate({
+                path: 'user',
+                select: 'name'
             });
         }
     }

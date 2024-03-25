@@ -42,7 +42,17 @@ const UserSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+},{
+  toJSON: {virtuals:true},
+  toObject: {virtuals:true}
 })
+
+UserSchema.virtual('appointments',{
+  ref: 'Appointment',
+  localField: '_id',
+  foreignField:'user',
+  justOne: false
+});
 
 UserSchema.pre('save',async function(){
     const salt = await bcrypt.genSalt(10);
