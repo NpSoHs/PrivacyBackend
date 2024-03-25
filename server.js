@@ -3,7 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db')
 const cookieParser = require('cookie-parser');
-
+const cors = require("cors")
 //config dotenv
 dotenv.config({path:'./config/config.env'});
 
@@ -15,10 +15,17 @@ const dentists = require('./routes/dentists');
 const auth = require('./routes/auth');
 const appointments = require('./routes/appointments');
 
+const corsOptions = {
+  origin: '*', // อนุญาติให้รับคำขอจากโดเมนนี้เท่านั้น
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // อนุญาติให้ใช้เมทอดเหล่านี้
+  allowedHeaders: ['Content-Type', 'Authorization','mode'], // อนุญาติให้ใช้ header เหล่านี้
+  credentials: true // อนุญาติให้ใช้งาน credentials
+};
+
 //Body parser
 const app = express(); 
 app.use(express.json());
-
+app.use(cors(corsOptions))
 //Cookie parser
 app.use(cookieParser());
 
